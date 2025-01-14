@@ -58,11 +58,12 @@ export default async function Fridge() {
         <Image
           alt="냉장고 이미지"
           src={fridgeImg}
-          width={300}
+          width={320}
           className="mx-auto"
+          data-credit="냉장고 클립 아트 PNG는 699pic에 의해 설계되었고,에서 유래되었다. https://kor.pngtree.com/freepng/refrigerator_5620739.html?sol=downref&id=bef"
         />
         {/* 냉동 */}
-        <div className="h-[42%] w-[80%] absolute top-0 left-10 py-4 px-2">
+        <div className="h-[50%] w-[80%] absolute top-4 left-6 py-4 px-1">
           <h4 className="text-lg font-bold">냉동</h4>
           <ul className="mt-2 overflow-auto flex flex-col gap-2">
             {freezerIngredients.map((ingre) => (
@@ -80,7 +81,7 @@ export default async function Fridge() {
             ))}
           </ul>
         </div>
-        <div className="h-[48%] w-[80%] absolute top-[45%] left-10 py-4 px-2">
+        <div className="h-[45%] w-[80%] absolute top-[54%] left-6 py-4 px-1">
           <h4 className="text-lg font-bold">냉장</h4>
           <ul className="mt-2 overflow-auto flex flex-col gap-2">
             {notFreezerIngredients.map((ingre) => (
