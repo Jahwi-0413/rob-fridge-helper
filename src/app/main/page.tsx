@@ -4,13 +4,16 @@ import {
   QueryDocumentSnapshot,
   Timestamp,
   collection,
+  deleteDoc,
+  doc,
   getDocs,
 } from "firebase/firestore";
 import Image from "next/image";
 
 import fridgeImg from "../../../public/images/fridge.png";
 import { Button } from "@/components/ui/button";
-import { EllipsisVerticalIcon } from "lucide-react";
+import { EllipsisVerticalIcon, TrashIcon } from "lucide-react";
+import Link from "next/link";
 
 type TIngredient = {
   name: string;
@@ -43,6 +46,15 @@ export default async function Fridge() {
     (ingre) => ingre.type !== "freezer"
   );
 
+  const onDelete = async (ingredientId: string) => {
+    try {
+      const ingreRef = doc(db, "ingredients", ingredientId);
+      await deleteDoc(ingreRef);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <main>
       <menu className="flex flex-row justify-between mb-4">
@@ -50,7 +62,9 @@ export default async function Fridge() {
           <Button>레시피 검색</Button>
         </li>
         <li>
-          <Button>재료 추가</Button>
+          <Link href="/ingredient">
+            <Button>재료 추가</Button>
+          </Link>
         </li>
       </menu>
 
@@ -74,9 +88,13 @@ export default async function Fridge() {
                     {ingre.createdDate}
                   </div>
                 </span>
-                <Button variant={"ghost"}>
-                  <EllipsisVerticalIcon />
-                </Button>
+                <div>
+                  <Link href={`/ingredient/${ingre.id}`}>
+                    <Button variant={"ghost"}>
+                      <EllipsisVerticalIcon />
+                    </Button>
+                  </Link>
+                </div>
               </li>
             ))}
           </ul>
@@ -92,9 +110,11 @@ export default async function Fridge() {
                     {ingre.createdDate}
                   </div>
                 </span>
-                <Button variant={"ghost"}>
-                  <EllipsisVerticalIcon />
-                </Button>
+                <Link href={`/ingredient/${ingre.id}`}>
+                  <Button variant={"ghost"}>
+                    <EllipsisVerticalIcon />
+                  </Button>
+                </Link>
               </li>
             ))}
           </ul>
