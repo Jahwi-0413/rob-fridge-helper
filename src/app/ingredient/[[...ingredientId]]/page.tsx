@@ -1,14 +1,9 @@
 import IngredientForm from "@/components/form/IngredientForm";
-import { Button } from "@/components/ui/button";
 import { db } from "@/firebase";
 import {
-  QueryDocumentSnapshot,
   Timestamp,
-  collection,
-  deleteDoc,
   doc,
   getDoc,
-  getDocs,
 } from "firebase/firestore";
 import { MoveLeftIcon } from "lucide-react";
 import Link from "next/link";
@@ -17,11 +12,6 @@ type TIngredient = {
   name: string;
   createdDate: Timestamp;
   type: "freezer" | "room" | "fridge";
-};
-
-const converter = {
-  toFirestore: (data: TIngredient) => data,
-  fromFirestore: (snap: QueryDocumentSnapshot) => snap.data() as TIngredient,
 };
 
 interface PIngredient {
@@ -45,12 +35,6 @@ export default async function Ingredient({ params }: PIngredient) {
       </>
     );
   }
-
-  const ingredientsRef = collection(db, "ingredients").withConverter(converter);
-  const ingredientsSnapshot = await getDocs(ingredientsRef);
-  const ingredientDoc = ingredientsSnapshot.docs.find(
-    (doc) => doc.id === ingredientId
-  );
 
   const ingreRef = doc(db, "ingredients", ingredientId);
   const ingreDoc = await getDoc(ingreRef);

@@ -4,15 +4,13 @@ import {
   QueryDocumentSnapshot,
   Timestamp,
   collection,
-  deleteDoc,
-  doc,
   getDocs,
 } from "firebase/firestore";
 import Image from "next/image";
 
 import fridgeImg from "../../../public/images/fridge.png";
 import { Button } from "@/components/ui/button";
-import { EllipsisVerticalIcon, TrashIcon } from "lucide-react";
+import { EllipsisVerticalIcon } from "lucide-react";
 import Link from "next/link";
 
 type TIngredient = {
@@ -46,14 +44,14 @@ export default async function Fridge() {
     (ingre) => ingre.type !== "freezer"
   );
 
-  const onDelete = async (ingredientId: string) => {
-    try {
-      const ingreRef = doc(db, "ingredients", ingredientId);
-      await deleteDoc(ingreRef);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // const onDelete = async (ingredientId: string) => {
+  //   try {
+  //     const ingreRef = doc(db, "ingredients", ingredientId);
+  //     await deleteDoc(ingreRef);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   return (
     <main>
@@ -90,9 +88,7 @@ export default async function Fridge() {
                 </span>
                 <div>
                   <Link href={`/ingredient/${ingre.id}`}>
-                    <Button variant={"ghost"}>
-                      <EllipsisVerticalIcon />
-                    </Button>
+                    <EllipsisVerticalIcon />
                   </Link>
                 </div>
               </li>
@@ -111,9 +107,7 @@ export default async function Fridge() {
                   </div>
                 </span>
                 <Link href={`/ingredient/${ingre.id}`}>
-                  <Button variant={"ghost"}>
-                    <EllipsisVerticalIcon />
-                  </Button>
+                  <EllipsisVerticalIcon />
                 </Link>
               </li>
             ))}

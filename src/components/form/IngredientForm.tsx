@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -18,24 +18,11 @@ import {
   SelectGroup,
   SelectTrigger,
   SelectValue,
-  SelectLabel,
   SelectItem,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { db } from "@/firebase";
-import {
-  QueryDocumentSnapshot,
-  Timestamp,
-  addDoc,
-  collection,
-  deleteDoc,
-  doc,
-  getDoc,
-  getDocs,
-  setDoc,
-} from "firebase/firestore";
-import { useRouter } from "next/navigation";
-import dayjs from "dayjs";
+import { Timestamp, addDoc, collection, doc, setDoc } from "firebase/firestore";
 
 const ingredientSchema = z.object({
   name: z.string().nonempty("이름을 입력해 주세요."),
@@ -52,12 +39,16 @@ type PIngredientForm =
       mode: "create";
     }
   | {
-      data: any;
+      data: {
+        id: string;
+        name: string;
+        createdDate: Date;
+        type: "freezer" | "room" | "fridge";
+      };
       mode: "edit";
     };
 
 export default function IngredientForm(props: PIngredientForm) {
-  const router = useRouter();
   const form = useForm<TIngredient>({
     resolver: zodResolver(ingredientSchema),
     defaultValues:
@@ -76,16 +67,13 @@ export default function IngredientForm(props: PIngredientForm) {
   const { control, handleSubmit, formState } = form;
 
   const onSubmit = async (data: z.infer<typeof ingredientSchema>) => {
-    console.log("on click submit");
     // 식재료 추가
     if (props.mode === "create") {
       try {
-        console.log("before add doc");
         await addDoc(collection(db, "ingredients"), {
           ...data,
           createdDate: Timestamp.now(),
         });
-        console.log("after add doc");
         form.reset();
       } catch (err) {
         console.log(err);
