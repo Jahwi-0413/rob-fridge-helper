@@ -1,18 +1,8 @@
 import IngredientForm from "@/components/form/IngredientForm";
 import { db } from "@/firebase";
-import {
-  Timestamp,
-  doc,
-  getDoc,
-} from "firebase/firestore";
+import { Timestamp, doc, getDoc } from "firebase/firestore";
 import { MoveLeftIcon } from "lucide-react";
 import Link from "next/link";
-
-type TIngredient = {
-  name: string;
-  createdDate: Timestamp;
-  type: "freezer" | "room" | "fridge";
-};
 
 interface PIngredient {
   params: Promise<{
