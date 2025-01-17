@@ -1,23 +1,13 @@
 import { db } from "@/firebase";
 import dayjs from "dayjs";
-import {
-  QueryDocumentSnapshot,
-  Timestamp,
-  collection,
-  getDocs,
-} from "firebase/firestore";
+import { QueryDocumentSnapshot, collection, getDocs } from "firebase/firestore";
 import Image from "next/image";
 
 import fridgeImg from "../../../public/images/fridge.png";
 import { Button } from "@/components/ui/button";
 import { EllipsisVerticalIcon } from "lucide-react";
 import Link from "next/link";
-
-type TIngredient = {
-  name: string;
-  createdDate: Timestamp;
-  type: "freezer" | "room" | "fridge";
-};
+import { TIngredient } from "@/types/ingredientTypes";
 
 const converter = {
   toFirestore: (data: TIngredient) => data,

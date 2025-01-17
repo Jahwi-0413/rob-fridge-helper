@@ -23,6 +23,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { db } from "@/firebase";
 import { Timestamp, addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { TIngredient } from "@/types/ingredientTypes";
+import { useRouter } from "next/navigation";
 
 const ingredientSchema = z.object({
   name: z.string().nonempty("이름을 입력해 주세요."),
@@ -32,23 +34,18 @@ const ingredientSchema = z.object({
   }),
 });
 
-type TIngredient = z.infer<typeof ingredientSchema>;
-
 type PIngredientForm =
   | {
       mode: "create";
     }
   | {
-      data: {
-        id: string;
-        name: string;
-        createdDate: Date;
-        type: "freezer" | "room" | "fridge";
-      };
+      data: TIngredient & { id: string };
       mode: "edit";
     };
 
 export default function IngredientForm(props: PIngredientForm) {
+  const router = useRouter();
+
   const form = useForm<TIngredient>({
     resolver: zodResolver(ingredientSchema),
     defaultValues:
@@ -75,20 +72,21 @@ export default function IngredientForm(props: PIngredientForm) {
           createdDate: Timestamp.now(),
         });
         form.reset();
+        return;
       } catch (err) {
         console.log(err);
+        return;
       }
-    } else {
-      try {
-        // 식재료 수정
-        const ingreRef = doc(db, "ingredients", props.data.id);
-        await setDoc(ingreRef, {
-          ...data,
-          createdDate: Timestamp.fromDate(props.data.createdDate),
-        });
-      } catch (err) {
-        console.log(err);
-      }
+    }
+    try {
+      // 식재료 수정
+      const ingreRef = doc(db, "ingredients", props.data.id);
+      await setDoc(ingreRef, {
+        ...data,
+        createdDate: Timestamp.fromDate(props.data.createdDate),
+      });
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -146,16 +144,17 @@ export default function IngredientForm(props: PIngredientForm) {
           )}
         </FormItem>
 
-        {props.mode === "create" ? (
-          <Button type="submit" className="w-[50%] self-center">
-            추가
+        <Button type="submit" className="w-[60%] self-center ">
+          {props.mode === "create" ? "추가" : "수정"}
+        </Button>
+        {props.mode === "edit" && (
+          <Button
+            type="button"
+            variant={"destructive"}
+            className="w-[60%] self-center"
+          >
+            삭제
           </Button>
-        ) : (
-          <>
-            <Button type="submit" className="w-[50%] self-center">
-              수정
-            </Button>
-          </>
         )}
       </form>
     </Form>
