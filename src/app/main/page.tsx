@@ -67,7 +67,7 @@ export default async function Fridge() {
         {/* 냉동 */}
         <div className="h-[50%] w-[80%] absolute top-4 left-6 py-4 px-1">
           <h4 className="text-lg font-bold">냉동</h4>
-          <ul className="mt-2 overflow-auto flex flex-col gap-2">
+          <ul className="h-[80%] mt-2flex flex-col gap-2 overflow-y-auto">
             {freezerIngredients.map((ingre) => (
               <li key={ingre.id} className="flex flex-row justify-between">
                 <span>
@@ -85,9 +85,9 @@ export default async function Fridge() {
             ))}
           </ul>
         </div>
-        <div className="h-[45%] w-[80%] absolute top-[54%] left-6 py-4 px-1">
+        <div className="h-[44%] w-[80%] absolute top-[54%] left-6 py-4 px-1">
           <h4 className="text-lg font-bold">냉장</h4>
-          <ul className="mt-2 overflow-auto flex flex-col gap-2">
+          <ul className="h-[80%] mt-2 flex flex-col gap-2 overflow-y-auto">
             {notFreezerIngredients.map((ingre) => (
               <li key={ingre.id} className="flex flex-row justify-between">
                 <span>
