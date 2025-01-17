@@ -22,7 +22,14 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { db } from "@/firebase";
-import { Timestamp, addDoc, collection, doc, setDoc } from "firebase/firestore";
+import {
+  Timestamp,
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  setDoc,
+} from "firebase/firestore";
 import { TIngredient } from "@/types/ingredientTypes";
 import { useRouter } from "next/navigation";
 
@@ -90,6 +97,15 @@ export default function IngredientForm(props: PIngredientForm) {
     }
   };
 
+  const onDelete = async (id: string) => {
+    try {
+      await deleteDoc(doc(db, "ingredients", id));
+      router.replace("/main");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <Form {...form}>
       <form
@@ -152,6 +168,7 @@ export default function IngredientForm(props: PIngredientForm) {
             type="button"
             variant={"destructive"}
             className="w-[60%] self-center"
+            onClick={() => onDelete(props.data.id)}
           >
             삭제
           </Button>
