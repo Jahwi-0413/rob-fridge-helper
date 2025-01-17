@@ -47,7 +47,9 @@ export default async function Fridge() {
     <main>
       <menu className="flex flex-row justify-between mb-4">
         <li>
-          <Button>레시피 검색</Button>
+          <Link href="/recipes">
+            <Button>레시피 검색</Button>
+          </Link>
         </li>
         <li>
           <Link href="/ingredient">
