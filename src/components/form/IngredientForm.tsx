@@ -122,8 +122,7 @@ export default function IngredientForm(props: PIngredientForm) {
               render={({ field }) => (
                 <Input
                   {...field}
-                  className="w-[120px]"
-                  placeholder="식재료 이름 입력"
+                  className="w-[120px] border-slate-900 rounded-none"
                 />
               )}
             />
@@ -141,10 +140,10 @@ export default function IngredientForm(props: PIngredientForm) {
               control={control}
               render={({ field }) => (
                 <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger className="w-[120px]">
+                  <SelectTrigger className="w-[120px] rounded-none border-slate-900">
                     <SelectValue placeholder="보관 장소" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="rounded-none">
                     <SelectGroup>
                       <SelectItem value="freezer">냉동</SelectItem>
                       <SelectItem value="fridge">냉장</SelectItem>
