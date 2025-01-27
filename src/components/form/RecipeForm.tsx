@@ -13,6 +13,7 @@ import { Input } from "../ui/input";
 import { Fragment } from "react";
 import { Button } from "../ui/button";
 import { MinusCircleIcon, PlusCircleIcon } from "lucide-react";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const ingredientsSchema = z.object({
   name: z.string().nonempty("재료 이름을 입력해 주세요."),
@@ -39,6 +40,7 @@ type PRecipeForm = {
 export default function RecipeForm({ defaultValue, mode }: PRecipeForm) {
   const form = useForm<TRecipeForm>({
     defaultValues: defaultValue,
+    resolver: zodResolver(recipeSchema),
   });
   const { control, handleSubmit, formState, register } = form;
 
