@@ -33,7 +33,7 @@ export default function Recipes() {
       <Link href="/main" className="absolute">
         <MoveLeftIcon />
       </Link>
-      <main className="flex flex-col justify-center gap-2 h-">
+      <main className="flex flex-col justify-center gap-2">
         <h1 className="font-3xl text-center font-bold">레시피</h1>
         <Input type="search" className="border-slate-900  rounded-none" />
         <ul className="mt-4 flex flex-col gap-4">
