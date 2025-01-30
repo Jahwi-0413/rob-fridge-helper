@@ -14,11 +14,12 @@ const converter = {
 };
 
 export default async function Recipes() {
-  const ingredientsSnapshot = await getDocs(
+  const recipeSnapshot = await getDocs(
     collection(db, "recipes").withConverter(converter)
   );
-  const recipes = ingredientsSnapshot.docs.map((doc) => ({
+  const recipes = recipeSnapshot.docs.map((doc) => ({
     ...doc.data(),
+    id: doc.id,
     createdDate: dayjs(doc.data().createdDate.toDate()).format(
       "YYYY.MM.DD HH:mm"
     ),
