@@ -1,32 +1,28 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { db } from "@/firebase";
 import { TRecipe } from "@/types/recipeTypes";
-import { Timestamp } from "firebase/firestore";
+import dayjs from "dayjs";
+import { QueryDocumentSnapshot, collection, getDocs } from "firebase/firestore";
 import { MoveLeftIcon } from "lucide-react";
 import Link from "next/link";
 
-export default function Recipes() {
-  const recipes: TRecipe[] = [
-    {
-      id: "1",
-      name: "참치마요우동",
-      createdDate: Timestamp.now(),
-      directions: [
-        "끓는물에 우동 사리를 1분 데친다",
-        "참치, 마요네즈, 간장, 참기름을 섞은 후 우동과 섞어준다",
-        "김가루를 뿌린다",
-      ],
-      ingredients: [
-        { name: "우동", amount: "1개" },
-        { name: "참치캔", amount: "반 개" },
-        { name: "마요네즈", amount: "2 큰술" },
-        { name: "간장", amount: "1 큰술" },
-        { name: "참기름", amount: "1 큰술" },
-        { name: "김가루", amount: "약간" },
-      ],
-    },
-  ];
+const converter = {
+  toFirestore: (data: TRecipe) => data,
+  fromFirestore: (snap: QueryDocumentSnapshot) => snap.data() as TRecipe,
+};
+
+export default async function Recipes() {
+  const ingredientsSnapshot = await getDocs(
+    collection(db, "recipes").withConverter(converter)
+  );
+  const recipes = ingredientsSnapshot.docs.map((doc) => ({
+    ...doc.data(),
+    createdDate: dayjs(doc.data().createdDate.toDate()).format(
+      "YYYY.MM.DD HH:mm"
+    ),
+  }));
 
   return (
     <>
@@ -48,7 +44,7 @@ export default function Recipes() {
                 <CardContent>
                   <ul>
                     {recipe.ingredients.map((ingre) => (
-                      <li key={ingre.name}>
+                      <li key={`ingre-${ingre.name}-${ingre.amount}`}>
                         &bull; {ingre.name} {ingre.amount}
                       </li>
                     ))}
