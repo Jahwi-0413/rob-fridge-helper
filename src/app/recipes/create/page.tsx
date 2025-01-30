@@ -7,6 +7,7 @@ export default function RecipeCreate() {
     name: "",
     directions: [{ value: "" }],
     ingredients: [{ name: "", amount: "" }],
+    createdDate: new Date(),
   };
 
   return (
