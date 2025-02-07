@@ -70,7 +70,7 @@ export async function createRecipe(data: TRecipeForm) {
       createdDate: Timestamp.now(),
     });
     return { success: true };
-  } catch (err) {
+  } catch {
     return { success: false, message: "레시피를 등록하지 못했습니다." };
   }
 }
@@ -84,7 +84,7 @@ export async function editRecipe(recipeId: string, data: TRecipeForm) {
       directions: data.directions.map((d) => d.value),
     });
     return { success: true };
-  } catch (err) {
+  } catch {
     return { success: false, message: "레시피를 수정하지 못했습니다." };
   }
 }
