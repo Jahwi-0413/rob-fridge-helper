@@ -14,9 +14,10 @@ import { Fragment } from "react";
 import { Button } from "../ui/button";
 import { MinusCircleIcon, PlusCircleIcon } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Timestamp, addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 import { useRouter } from "next/navigation";
+import { createRecipe } from "@/actions/recipeActions";
 
 const ingredientsSchema = z.object({
   name: z.string().nonempty("재료 이름을 입력해 주세요."),
@@ -75,22 +76,12 @@ export default function RecipeForm({ defaultValue, mode }: PRecipeForm) {
 
   // 레시피 생성
   const createSubmit = async (data: TRecipeForm) => {
-    try {
-      await addDoc(collection(db, "recipes"), {
-        ...data,
-        ingredients: data.ingredients.map((ingre) => ({
-          name: ingre.name.trim(),
-          amount: ingre.amount.trim(),
-        })),
-        // useFieldArray 쓰려고 만든 {value : string}[]을 string[]으로 바꾼다.
-        directions: data.directions.map((d) => d.value.trim()),
-        createdDate: Timestamp.now(),
-      });
+    const result = await createRecipe(data);
+    if (result.success) {
       form.reset();
       return;
-    } catch (err) {
-      console.log(err);
-      return;
+    } else {
+      console.log(result?.message ?? "");
     }
   };
   const editSubmit = async (data: TRecipeForm) => {
