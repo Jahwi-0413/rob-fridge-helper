@@ -38,7 +38,10 @@ export default async function Recipes() {
             <li key={recipe.id}>
               <Card className="bg-transparent border-slate-900 rounded-none">
                 <CardHeader>
-                  <Link href={"#"} className="underline underline-offset-4">
+                  <Link
+                    href={`/recipes/${recipe.id}`}
+                    className="underline underline-offset-4"
+                  >
                     <CardTitle className="text-lg">{recipe.name}</CardTitle>
                   </Link>
                 </CardHeader>
