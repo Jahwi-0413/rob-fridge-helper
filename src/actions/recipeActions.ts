@@ -2,7 +2,44 @@
 
 import { TRecipeForm } from "@/components/form/RecipeForm";
 import { db } from "@/firebase";
-import { Timestamp, addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { TRecipeData } from "@/types/recipeTypes";
+import {
+  QueryDocumentSnapshot,
+  Timestamp,
+  addDoc,
+  collection,
+  doc,
+  getDocs,
+  setDoc,
+} from "firebase/firestore";
+
+const recipeConverter = {
+  // firestore에 저장할 때
+  toFirestore: (data: TRecipeData) => ({
+    ...data,
+    createdDate: Timestamp.fromDate(new Date(data.createdDate)),
+  }),
+  // firestore에서 가져올 때
+  fromFirestore: (snap: QueryDocumentSnapshot) => {
+    return {
+      id: snap.id,
+      name: snap.data().name,
+      ingredients: snap.data().ingredients,
+      directions: snap.data().directions,
+      createdDate: snap.data().createdDate.toDate(),
+    } as TRecipeData;
+  },
+};
+
+// 레시피 목록 조회
+export async function getRecipes(): Promise<TRecipeData[]> {
+  const recipeSnapshot = await getDocs(
+    collection(db, "recipes").withConverter(recipeConverter)
+  );
+  return recipeSnapshot.docs.map((doc) => ({
+    ...doc.data(),
+  }));
+}
 
 // 레시피 등록
 export async function createRecipe(data: TRecipeForm) {

@@ -1,29 +1,12 @@
+import { getRecipes } from "@/actions/recipeActions";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { db } from "@/firebase";
-import { TRecipe } from "@/types/recipeTypes";
-import dayjs from "dayjs";
-import { QueryDocumentSnapshot, collection, getDocs } from "firebase/firestore";
 import { MoveLeftIcon } from "lucide-react";
 import Link from "next/link";
 
-const converter = {
-  toFirestore: (data: TRecipe) => data,
-  fromFirestore: (snap: QueryDocumentSnapshot) => snap.data() as TRecipe,
-};
-
 export default async function Recipes() {
-  const recipeSnapshot = await getDocs(
-    collection(db, "recipes").withConverter(converter)
-  );
-  const recipes = recipeSnapshot.docs.map((doc) => ({
-    ...doc.data(),
-    id: doc.id,
-    createdDate: dayjs(doc.data().createdDate.toDate()).format(
-      "YYYY.MM.DD HH:mm"
-    ),
-  }));
+  const recipes = await getRecipes();
 
   return (
     <>

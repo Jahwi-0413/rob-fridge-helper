@@ -30,7 +30,7 @@ const recipeSchema = z.object({
   name: z.string().nonempty("레시피 이름을 입력해 주세요."),
   ingredients: z.array(ingredientsSchema).min(1),
   directions: z.array(directionSchema).min(1),
-  createdDate: z.date(),
+  createdDate: z.date().optional(),
 });
 
 export type TRecipeForm = z.infer<typeof recipeSchema>;

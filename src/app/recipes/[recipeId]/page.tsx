@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { db } from "@/firebase";
-import { TRecipe } from "@/types/recipeTypes";
+import { TRecipeDoc } from "@/types/recipeTypes";
 import { QueryDocumentSnapshot, doc, getDoc } from "firebase/firestore";
 import { MoveLeftIcon } from "lucide-react";
 import Link from "next/link";
@@ -12,8 +12,8 @@ interface PRecipe {
 }
 
 const converter = {
-  toFirestore: (data: TRecipe) => data,
-  fromFirestore: (snap: QueryDocumentSnapshot) => snap.data() as TRecipe,
+  toFirestore: (data: TRecipeDoc) => data,
+  fromFirestore: (snap: QueryDocumentSnapshot) => snap.data() as TRecipeDoc,
 };
 
 export default async function Recipe({ params }: PRecipe) {
