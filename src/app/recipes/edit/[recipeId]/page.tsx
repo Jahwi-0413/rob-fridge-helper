@@ -38,7 +38,7 @@ export default async function RecipeEdit({ params }: PRecipeEdit) {
           <MoveLeftIcon />
         </Link>
         <main className="flex flex-col justify-center gap-2">
-          <h1 className="font-3xl text-center font-bold">레시피 추가</h1>
+          <h1 className="text-xl text-center font-bold">레시피 추가</h1>
           <RecipeForm defaultValue={formDefVal} mode="edit" />
         </main>
       </>

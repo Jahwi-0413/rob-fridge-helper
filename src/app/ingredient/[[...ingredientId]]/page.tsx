@@ -20,7 +20,7 @@ export default async function Ingredient({ params }: PIngredient) {
         <Link href="/main" className="absolute">
           <MoveLeftIcon />
         </Link>
-        <h1 className="font-3xl text-center font-bold mb-3">식재료 추가</h1>
+        <h1 className="text-xl text-center font-bold mb-3">식재료 추가</h1>
         <IngredientForm mode="create" />;
       </>
     );
@@ -39,7 +39,7 @@ export default async function Ingredient({ params }: PIngredient) {
       <Link href="/main" className="absolute">
         <MoveLeftIcon className="absolute" />
       </Link>
-      <h1 className="font-3xl text-center font-bold mb-3">식재료 수정</h1>
+      <h1 className="text-xl text-center font-bold mb-3">식재료 수정</h1>
       <IngredientForm
         mode="edit"
         data={{
