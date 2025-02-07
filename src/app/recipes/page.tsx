@@ -1,12 +1,16 @@
-import { getRecipes } from "@/actions/recipeActions";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { TRecipeData } from "@/types/recipeTypes";
 import { MoveLeftIcon } from "lucide-react";
 import Link from "next/link";
 
 export default async function Recipes() {
-  const recipes = await getRecipes();
+  const recipes: TRecipeData[] = await (
+    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/recipes`, {
+      cache: "no-store",
+    })
+  ).json();
 
   return (
     <>
