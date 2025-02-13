@@ -20,7 +20,7 @@ export default async function RecipeEdit({ params }: PRecipeEdit) {
 
   return (
     <>
-      <Link href="/recipes" className="absolute">
+      <Link href={`/recipes/${recipeId}`} className="absolute">
         <MoveLeftIcon />
       </Link>
       <main className="flex flex-col justify-center gap-2">
