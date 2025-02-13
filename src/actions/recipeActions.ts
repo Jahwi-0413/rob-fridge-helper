@@ -9,7 +9,6 @@ import {
   addDoc,
   collection,
   doc,
-  getDoc,
   getDocs,
   setDoc,
 } from "firebase/firestore";
@@ -40,20 +39,6 @@ export async function getRecipes(): Promise<TRecipeData[]> {
   return recipeDocs.docs.map((doc) => ({
     ...doc.data(),
   }));
-}
-
-// 레시피 한개 조회
-export async function getRecipe(id: string) {
-  const recipeDoc = await getDoc(
-    doc(db, "recipes", id).withConverter(recipeConverter)
-  );
-
-  if (recipeDoc.exists()) {
-    return {
-      ...recipeDoc.data(),
-    };
-  }
-  throw new Error("존재하지 않는 레시피 입니다.");
 }
 
 // 레시피 등록

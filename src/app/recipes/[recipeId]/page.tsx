@@ -1,5 +1,5 @@
-import { getRecipe } from "@/actions/recipeActions";
 import { Button } from "@/components/ui/button";
+import { TRecipeData } from "@/types/recipeTypes";
 import { MoveLeftIcon } from "lucide-react";
 import Link from "next/link";
 
@@ -12,7 +12,11 @@ interface PRecipe {
 export default async function Recipe({ params }: PRecipe) {
   const recipeId = (await params)?.recipeId;
 
-  const recipeData = await getRecipe(recipeId);
+  const recipeData: TRecipeData = await (
+    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/recipes/${recipeId}`, {
+      cache: "no-store",
+    })
+  ).json();
 
   return (
     <>

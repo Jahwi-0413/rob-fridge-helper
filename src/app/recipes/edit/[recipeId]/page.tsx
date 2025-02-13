@@ -1,5 +1,5 @@
-import { getRecipe } from "@/actions/recipeActions";
 import RecipeForm, { TRecipeForm } from "@/components/form/RecipeForm";
+import { TRecipeData } from "@/types/recipeTypes";
 import { MoveLeftIcon } from "lucide-react";
 import Link from "next/link";
 
@@ -12,7 +12,14 @@ interface PRecipeEdit {
 export default async function RecipeEdit({ params }: PRecipeEdit) {
   const recipeId = (await params)?.recipeId;
 
-  const recipeData = await getRecipe(recipeId);
+  const recipeData: TRecipeData = await (
+    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/recipes/${recipeId}`, {
+      cache: "no-store",
+    })
+  ).json();
+
+  console.log(recipeData)
+
   const formDefVal: TRecipeForm & { id: string } = {
     ...recipeData,
     directions: recipeData.directions.map((d) => ({ value: d })),
