@@ -18,8 +18,6 @@ export default async function RecipeEdit({ params }: PRecipeEdit) {
     })
   ).json();
 
-  console.log(recipeData)
-
   const formDefVal: TRecipeForm & { id: string } = {
     ...recipeData,
     directions: recipeData.directions.map((d) => ({ value: d })),
