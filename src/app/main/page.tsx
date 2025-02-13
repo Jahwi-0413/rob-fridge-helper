@@ -1,25 +1,13 @@
-import { db } from "@/firebase";
-import dayjs from "dayjs";
-import { QueryDocumentSnapshot, collection, getDocs } from "firebase/firestore";
 import { EllipsisVerticalIcon } from "lucide-react";
 import Link from "next/link";
 import { TIngredient } from "@/types/ingredientTypes";
 
-const converter = {
-  toFirestore: (data: TIngredient) => data,
-  fromFirestore: (snap: QueryDocumentSnapshot) => snap.data() as TIngredient,
-};
-
 export default async function Fridge() {
-  const ingredientsRef = collection(db, "ingredients").withConverter(converter);
-  const ingredientsSnapshot = await getDocs(ingredientsRef);
-  const ingredients = ingredientsSnapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-    createdDate: dayjs(doc.data().createdDate.toDate()).format(
-      "YYYY.MM.DD HH:mm"
-    ),
-  }));
+  const ingredients: TIngredient[] = await (
+    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/ingredients`, {
+      cache: "no-store",
+    })
+  ).json();
 
   // 냉동 재료
   const freezerIngredients = ingredients.filter(
