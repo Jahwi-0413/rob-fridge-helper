@@ -17,7 +17,7 @@ export default function MainLayout({
           </Link>
         </li>
         <li>
-          <Link href="/ingredient">
+          <Link href="/ingredient/create">
             <Button variant={"link"}>재료 추가</Button>
           </Link>
         </li>
