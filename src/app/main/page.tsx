@@ -1,10 +1,6 @@
 import { db } from "@/firebase";
 import dayjs from "dayjs";
 import { QueryDocumentSnapshot, collection, getDocs } from "firebase/firestore";
-import Image from "next/image";
-
-import fridgeImg from "../../../public/images/fridge.png";
-import { Button } from "@/components/ui/button";
 import { EllipsisVerticalIcon } from "lucide-react";
 import Link from "next/link";
 import { TIngredient } from "@/types/ingredientTypes";
@@ -34,78 +30,43 @@ export default async function Fridge() {
     (ingre) => ingre.type !== "freezer"
   );
 
-  // const onDelete = async (ingredientId: string) => {
-  //   try {
-  //     const ingreRef = doc(db, "ingredients", ingredientId);
-  //     await deleteDoc(ingreRef);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
-
   return (
-    <main>
-      <menu className="flex flex-row justify-between mb-4">
-        <li>
-          <Link href="/recipes">
-            <Button variant={"link"}>레시피 검색</Button>
-          </Link>
-        </li>
-        <li>
-          <Link href="/ingredient">
-            <Button variant={"link"}>재료 추가</Button>
-          </Link>
-        </li>
-      </menu>
-
-      <div className="relative">
-        <Image
-          alt="냉장고 이미지"
-          src={fridgeImg}
-          width={320}
-          className="mx-auto"
-          data-credit="냉장고 클립 아트 PNG는 699pic에 의해 설계되었고,에서 유래되었다. https://kor.pngtree.com/freepng/refrigerator_5620739.html?sol=downref&id=bef"
-        />
-        {/* 냉동 */}
-        <div className="h-[50%] w-[80%] absolute top-4 left-6 py-4 px-1">
-          <h4 className="text-lg font-bold">냉동</h4>
-          <ul className="h-[80%] mt-2flex flex-col gap-2 overflow-y-auto">
-            {freezerIngredients.map((ingre) => (
-              <li key={ingre.id} className="flex flex-row justify-between">
-                <span>
-                  <div>{ingre.name}</div>
-                  <div className="text-xs text-gray-600">
-                    {ingre.createdDate}
-                  </div>
-                </span>
-                <div>
-                  <Link href={`/ingredient/${ingre.id}`}>
-                    <EllipsisVerticalIcon />
-                  </Link>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="h-[44%] w-[80%] absolute top-[54%] left-6 py-4 px-1">
-          <h4 className="text-lg font-bold">냉장</h4>
-          <ul className="h-[80%] mt-2 flex flex-col gap-2 overflow-y-auto">
-            {notFreezerIngredients.map((ingre) => (
-              <li key={ingre.id} className="flex flex-row justify-between">
-                <span>
-                  <div>{ingre.name}</div>
-                  <div className="text-xs text-gray-600">
-                    {ingre.createdDate}
-                  </div>
-                </span>
+    <>
+      {/* 냉동 */}
+      <div className="h-[50%] w-[80%] absolute top-4 left-6 py-4 px-1">
+        <h4 className="text-lg font-bold">냉동</h4>
+        <ul className="h-[80%] mt-2flex flex-col gap-2 overflow-y-auto">
+          {freezerIngredients.map((ingre) => (
+            <li key={ingre.id} className="flex flex-row justify-between">
+              <span>
+                <div>{ingre.name}</div>
+                <div className="text-xs text-gray-600">{ingre.createdDate}</div>
+              </span>
+              <div>
                 <Link href={`/ingredient/${ingre.id}`}>
                   <EllipsisVerticalIcon />
                 </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
-    </main>
+      <div className="h-[44%] w-[80%] absolute top-[54%] left-6 py-4 px-1">
+        <h4 className="text-lg font-bold">냉장</h4>
+        <ul className="h-[80%] mt-2 flex flex-col gap-2 overflow-y-auto">
+          {notFreezerIngredients.map((ingre) => (
+            <li key={ingre.id} className="flex flex-row justify-between">
+              <span>
+                <div>{ingre.name}</div>
+                <div className="text-xs text-gray-600">{ingre.createdDate}</div>
+              </span>
+              <Link href={`/ingredient/${ingre.id}`}>
+                <EllipsisVerticalIcon />
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </>
   );
 }
