@@ -1,15 +1,11 @@
 import { db } from "@/firebase";
-import { TIngredient } from "@/types/ingredientTypes";
-import {
-  QueryDocumentSnapshot,
-  doc,
-  getDoc,
-} from "firebase/firestore";
+import { TIngredientDoc } from "@/types/ingredientTypes";
+import { QueryDocumentSnapshot, doc, getDoc } from "firebase/firestore";
 import { NextResponse } from "next/server";
 
 const ingredientConverter = {
-  toFirestore: (data: TIngredient) => data,
-  fromFirestore: (snap: QueryDocumentSnapshot) => snap.data() as TIngredient,
+  toFirestore: (data: TIngredientDoc) => data,
+  fromFirestore: (snap: QueryDocumentSnapshot) => snap.data() as TIngredientDoc,
 };
 
 export async function GET(
@@ -34,6 +30,7 @@ export async function GET(
 
     return NextResponse.json({
       ...recipeDoc.data(),
+      createdDate: recipeDoc.data().createdDate.toDate(),
     });
   } catch {
     return NextResponse.json({}, { status: 500 });

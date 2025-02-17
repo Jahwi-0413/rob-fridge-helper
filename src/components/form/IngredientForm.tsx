@@ -22,19 +22,14 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { db } from "@/firebase";
-import {
-  Timestamp,
-  deleteDoc,
-  doc,
-  setDoc,
-} from "firebase/firestore";
-import { TIngredient } from "@/types/ingredientTypes";
+import { deleteDoc, doc } from "firebase/firestore";
+import { TIngredientData } from "@/types/ingredientTypes";
 import { useRouter } from "next/navigation";
-import { createIngredient } from "@/actions/ingredientActions";
+import { createIngredient, editIngredient } from "@/actions/ingredientActions";
 
 const ingredientSchema = z.object({
   name: z.string().nonempty("이름을 입력해 주세요."),
-  createdDate: z.date(),
+  createdDate: z.string(),
   type: z.enum(["freezer", "room", "fridge"], {
     invalid_type_error: "타입을 설정해 주세요",
   }),
@@ -45,20 +40,20 @@ type PIngredientForm =
       mode: "create";
     }
   | {
-      data: TIngredient & { id: string };
+      data: TIngredientData & { id: string };
       mode: "edit";
     };
 
 export default function IngredientForm(props: PIngredientForm) {
   const router = useRouter();
 
-  const form = useForm<TIngredient>({
+  const form = useForm<TIngredientData>({
     resolver: zodResolver(ingredientSchema),
     defaultValues:
       props.mode === "create"
         ? {
             name: "",
-            createdDate: new Date(),
+            createdDate: "",
             type: "room",
           }
         : {
@@ -73,7 +68,9 @@ export default function IngredientForm(props: PIngredientForm) {
     // 식재료 추가
     if (props.mode === "create") {
       try {
-        await createIngredient(data);
+        await createIngredient({
+          ...data,
+        });
         form.reset();
         return;
       } catch (err) {
@@ -82,11 +79,9 @@ export default function IngredientForm(props: PIngredientForm) {
       }
     }
     try {
-      // 식재료 수정
-      const ingreRef = doc(db, "ingredients", props.data.id);
-      await setDoc(ingreRef, {
+      await editIngredient({
+        id: props.data.id,
         ...data,
-        createdDate: Timestamp.fromDate(props.data.createdDate),
       });
     } catch (err) {
       console.log(err);
@@ -155,7 +150,11 @@ export default function IngredientForm(props: PIngredientForm) {
           )}
         </FormItem>
 
-        <Button type="submit" className="w-[60%] self-center ">
+        <Button
+          type="submit"
+          className="w-[60%] self-center"
+          disabled={!formState.isValid}
+        >
           {props.mode === "create" ? "추가" : "수정"}
         </Button>
         {props.mode === "edit" && (

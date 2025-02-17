@@ -1,16 +1,16 @@
 import { db } from "@/firebase";
-import { TIngredient } from "@/types/ingredientTypes";
+import { TIngredientData, TIngredientDoc } from "@/types/ingredientTypes";
 import { QueryDocumentSnapshot, collection, getDocs } from "firebase/firestore";
 import { NextResponse } from "next/server";
 import dayjs from "dayjs";
 
 const ingredientConverter = {
-  toFirestore: (data: TIngredient) => data,
-  fromFirestore: (snap: QueryDocumentSnapshot) => snap.data() as TIngredient,
+  toFirestore: (data: TIngredientDoc) => data,
+  fromFirestore: (snap: QueryDocumentSnapshot) => snap.data() as TIngredientDoc,
 };
 
 // 재료 목록 가져오기
-export async function GET(): Promise<NextResponse<TIngredient[]>> {
+export async function GET(): Promise<NextResponse<TIngredientData[]>> {
   const ingresRef = collection(db, "ingredients").withConverter(
     ingredientConverter
   );
