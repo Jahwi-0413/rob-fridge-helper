@@ -24,14 +24,13 @@ import { Button } from "@/components/ui/button";
 import { db } from "@/firebase";
 import {
   Timestamp,
-  addDoc,
-  collection,
   deleteDoc,
   doc,
   setDoc,
 } from "firebase/firestore";
 import { TIngredient } from "@/types/ingredientTypes";
 import { useRouter } from "next/navigation";
+import { createIngredient } from "@/actions/ingredientActions";
 
 const ingredientSchema = z.object({
   name: z.string().nonempty("이름을 입력해 주세요."),
@@ -74,10 +73,7 @@ export default function IngredientForm(props: PIngredientForm) {
     // 식재료 추가
     if (props.mode === "create") {
       try {
-        await addDoc(collection(db, "ingredients"), {
-          ...data,
-          createdDate: Timestamp.now(),
-        });
+        await createIngredient(data);
         form.reset();
         return;
       } catch (err) {
