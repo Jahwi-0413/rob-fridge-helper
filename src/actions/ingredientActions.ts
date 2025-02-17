@@ -1,6 +1,13 @@
 import { db } from "@/firebase";
 import { TIngredientData } from "@/types/ingredientTypes";
-import { Timestamp, addDoc, collection, doc, setDoc } from "firebase/firestore";
+import {
+  Timestamp,
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  setDoc,
+} from "firebase/firestore";
 
 // 식재료 생성
 export async function createIngredient(
@@ -30,4 +37,11 @@ export async function editIngredient(data: TIngredientData & { id: string }) {
   }
 }
 
-// 식재료
+// 식재료 삭제
+export async function deleteIngredient(ingreId: string) {
+  try {
+    await deleteDoc(doc(db, "ingredients", ingreId));
+  } catch {
+    throw new Error("식재료를 삭제할 수 없습니다.");
+  }
+}

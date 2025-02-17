@@ -25,7 +25,11 @@ import { db } from "@/firebase";
 import { deleteDoc, doc } from "firebase/firestore";
 import { TIngredientData } from "@/types/ingredientTypes";
 import { useRouter } from "next/navigation";
-import { createIngredient, editIngredient } from "@/actions/ingredientActions";
+import {
+  createIngredient,
+  deleteIngredient,
+  editIngredient,
+} from "@/actions/ingredientActions";
 
 const ingredientSchema = z.object({
   name: z.string().nonempty("이름을 입력해 주세요."),
@@ -90,7 +94,7 @@ export default function IngredientForm(props: PIngredientForm) {
 
   const onDelete = async (id: string) => {
     try {
-      await deleteDoc(doc(db, "ingredients", id));
+      await deleteIngredient(id);
       router.replace("/main");
     } catch (err) {
       console.log(err);
