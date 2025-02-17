@@ -2,14 +2,7 @@
 
 import { TRecipeForm } from "@/components/form/RecipeForm";
 import { db } from "@/firebase";
-import {
-  Timestamp,
-  addDoc,
-  collection,
-  doc,
-  setDoc,
-} from "firebase/firestore";
-
+import { Timestamp, addDoc, collection, doc, setDoc } from "firebase/firestore";
 
 // 레시피 등록
 export async function createRecipe(data: TRecipeForm) {

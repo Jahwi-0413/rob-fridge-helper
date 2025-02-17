@@ -1,9 +1,9 @@
 import { EllipsisVerticalIcon } from "lucide-react";
 import Link from "next/link";
-import { TIngredientDoc } from "@/types/ingredientTypes";
+import { TIngredientData } from "@/types/ingredientTypes";
 
 export default async function Fridge() {
-  const ingredients: TIngredientDoc[] = await (
+  const ingredients: TIngredientData[] = await (
     await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/ingredients`, {
       cache: "no-store",
     })
