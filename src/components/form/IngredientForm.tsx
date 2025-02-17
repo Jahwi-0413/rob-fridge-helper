@@ -21,8 +21,6 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { db } from "@/firebase";
-import { deleteDoc, doc } from "firebase/firestore";
 import { TIngredientData } from "@/types/ingredientTypes";
 import { useRouter } from "next/navigation";
 import {
