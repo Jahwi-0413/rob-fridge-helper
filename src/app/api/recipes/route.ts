@@ -1,7 +1,12 @@
 import { db } from "@/firebase";
 import { TRecipeData } from "@/types/recipeTypes";
-import { QueryDocumentSnapshot, Timestamp, collection, getDocs } from "firebase/firestore";
-import { NextResponse } from "next/server";
+import {
+  QueryDocumentSnapshot,
+  Timestamp,
+  collection,
+  getDocs,
+} from "firebase/firestore";
+import { NextRequest, NextResponse } from "next/server";
 
 const recipeConverter = {
   // firestore에 저장할 때
@@ -21,12 +26,29 @@ const recipeConverter = {
   },
 };
 
-export async function GET(): Promise<NextResponse<TRecipeData[]>> {
+export async function GET(
+  req: NextRequest
+): Promise<NextResponse<TRecipeData[]>> {
+  const { searchParams } = new URL(req.url);
+  const name = searchParams.get("name");
+
   const recipeDocs = await getDocs(
     collection(db, "recipes").withConverter(recipeConverter)
   );
   const recipes = recipeDocs.docs.map((doc) => ({
     ...doc.data(),
   }));
+
+  // 레시피 이름 조회 (firestore는 문자열 포함 검색이 안됨)
+  if (name) {
+    return NextResponse.json(
+      recipeDocs.docs
+        .map((doc) => ({
+          ...doc.data(),
+        }))
+        .filter((data) => data.name.indexOf(name) !== -1)
+    );
+  }
+
   return NextResponse.json(recipes);
 }
