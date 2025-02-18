@@ -15,7 +15,6 @@ export default function RecipeList() {
   };
 
   useEffect(() => {
-    console.log(searchText);
     fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/recipes${
         searchText.length > 0 ? `?name=${searchText}` : ""
